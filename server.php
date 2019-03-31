@@ -8,7 +8,7 @@ $reason   = "";
 $errors = array();
 
 // connects to the database
-$db = mysqli_connect('localhost', 'root', '', 'booking');
+$db = mysqli_connect('localhost', 'root', '', 'db_booking');
 
 // this code is for handling the appointment form
 if (isset($_POST['reg_appointment'])) {
