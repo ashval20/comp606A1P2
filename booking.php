@@ -51,11 +51,11 @@
   	</div>
   	<div class="input-group">
       <!--Submits form values-->
-  	  <button type="submit" class="btn" name="reg_appointment">Sign Up</button>
+  	  <button type="submit" class="btn" name="reg_appointment">Make Appointment</button>
   	</div>
   	<p>
       <!--changes to Sign In page-->
-  		Already a member? <a href="login.php">Sign in</a>
+  		Want to cancel an Appointment? <a href="cancelbooking.php">Cancel Here</a>
   	</p>
   </form>
 </body>

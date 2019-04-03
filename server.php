@@ -89,4 +89,31 @@ if (isset($_POST['login_user'])) {
   }
 }
 
+
+
+// this code is for handling the cancellation form
+if (isset($_POST['cancel_appointment'])) {
+  // receives all input values from the form
+  $time = mysqli_real_escape_string($db, $_POST['time']);
+  $name = mysqli_real_escape_string($db, $_POST['name']);
+  $password = mysqli_real_escape_string($db, $_POST['password']);
+  // ensures form has been correctly filled
+  if (empty($time)) { array_push($errors, "Time is required"); }
+  if (empty($name)) { array_push($errors, "Name is required"); }
+  if (empty($password)) { array_push($errors, "Password is required"); }
+  // Checks if appointment time has allready been filled
+  if (count($errors) == 0) {
+  	$password = md5($password);
+    $query = "SELECT * FROM appointments WHERE timeslot='$time' AND password='$password'";
+    if (mysqli_num_rows($results) == 1) {
+      $delete = "DELETE * FROM appointments WHERE timeslot='$time' AND password='$password'";
+  	  echo "Appointment Cancelled"
+  	  header('location: index.php');//we will put a link to the therapistinfo page here
+  	}else {
+      // if username or password is incorrect displays error
+  		array_push($errors, "Wrong time/name/password combination");
+  	}
+  }
+}
+
 ?>
