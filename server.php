@@ -124,4 +124,19 @@ if (isset($_POST['cancel_appointment'])) {
   	}
   }
 }
+//therapist registration
+if (isset($_POST['submit'])) {
+$username =  mysqli_real_escape_string($db, $_POST['username']);
+$password =  mysqli_real_escape_string($db, $_POST['password']);
+$therapistname = mysqli_real_escape_string($db, $_POST['therapistname']);
+if (empty($username)) { array_push($errors, "Username is required"); }
+if (empty($password)) { array_push($errors, "Password is required"); }
+if (empty($therapistname)) { array_push($errors, "Therapistname is required"); }
+
+
+  if (count($errors) == 0) {
+    $epassword=md5($password);
+    $sql = "INSERT INTO `therapists` (`username`, `password`,`therapistname`) VALUES ('$username', '$epassword','$therapistname')";
+}
+}
 ?>
