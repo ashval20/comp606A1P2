@@ -94,6 +94,9 @@ if (isset($_POST['login_user'])) {
 // this code is for handling the cancellation form
 if (isset($_POST['cancel_appointment'])) {
   // receives all input values from the form
+  //retrieves current datetime
+  $date = date('Y/m/d H:i:s');
+
   $time = mysqli_real_escape_string($db, $_POST['time']);
   $name = mysqli_real_escape_string($db, $_POST['name']);
   $password = mysqli_real_escape_string($db, $_POST['password']);
@@ -101,14 +104,20 @@ if (isset($_POST['cancel_appointment'])) {
   if (empty($time)) { array_push($errors, "Time is required"); }
   if (empty($name)) { array_push($errors, "Name is required"); }
   if (empty($password)) { array_push($errors, "Password is required"); }
-  // Checks if appointment time has allready been filled
+  // Checks if appointment exists
   if (count($errors) == 0) {
   	$password = md5($password);
     $query = "SELECT * FROM appointments WHERE timeslot='$time' AND password='$password'";
     if (mysqli_num_rows($results) == 1) {
+      //deletes appointment
+      $interval = $date->diff($time);
+      $interval->format(%a);
       $delete = "DELETE * FROM appointments WHERE timeslot='$time' AND password='$password'";
+      if ($interval => 1){
+        $_SESSION['success'] = "You appointmennt is cancelled and you have been charged a small fee for late cancellation";
+      }
   	  echo "Appointment Cancelled"
-  	  header('location: index.php');//we will put a link to the therapistinfo page here
+  	  header('location: index.php');
   	}else {
       // if username or password is incorrect displays error
   		array_push($errors, "Wrong time/name/password combination");
