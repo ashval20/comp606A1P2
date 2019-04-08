@@ -1,4 +1,6 @@
-
+<?php
+  session_start();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -9,16 +11,9 @@ that customers can lookat-->
 	<link rel="stylesheet" type="text/css" href="style.css"><!--we will create a seperate style for the pages than we have for the forms-->
 </head>
 <body>
-	<script type=”text/javascript”>
-	 function login() {
-	 window.location.href = "login.php";
-	 }
-	 function makeappoinment() {
-	 window.location.href = "booking.php";
-	 }
-	 function cancelappontment() {
-	 window.location.href = "cancelbooking.php";
-	 }
+	<a href="login.php">Login</a>
+	<a href="booking.php">Make Appointment</a>
+	<a href="cancelbooking.php">Cancel Appointment</a>
 	 </script>
 <div class="header">
 	<h2>Home Page</h2>

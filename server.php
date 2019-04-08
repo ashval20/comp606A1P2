@@ -3,6 +3,7 @@ session_start();
 // initiates variables
 $username = "";
 $email    = "";
+$time    = "";
 $credit   = "";
 $reason   = "";
 $errors = array();
@@ -13,7 +14,7 @@ $db = mysqli_connect('localhost', 'root', '', 'db_booking');
 // this code is for handling the appointment form
 if (isset($_POST['reg_appointment'])) {
   // receives all input values from the form
-  $name = mysqli_real_escape_string($db, $_POST['name']);
+  $username = mysqli_real_escape_string($db, $_POST['name']);
   $email = mysqli_real_escape_string($db, $_POST['email']);
   $time = mysqli_real_escape_string($db, $_POST['time']);
   $password_1 = mysqli_real_escape_string($db, $_POST['password_1']);
@@ -22,12 +23,12 @@ if (isset($_POST['reg_appointment'])) {
   $reason = mysqli_real_escape_string($db, $_POST['reason']);
 
   // ensures form has been correctly filled
-  if (empty($name)) { array_push($errors, "Name is required"); }
+  if (empty($username)) { array_push($errors, "Name is required"); }
   if (empty($email)) { array_push($errors, "Email is required"); }
   if (empty($time)) { array_push($errors, "Time is required"); }
   $timeform_check_query = "SELECT * FROM timeslots WHERE timeslot='$time' LIMIT 1";
   $formresult = mysqli_query($db, $timeform_check_query);
-  $timecheck = mysqli_fetch_assoc($result);
+  $timecheck = mysqli_fetch_assoc($formresult);
   if (!$timecheck) { // if timeslot does not exist
       array_push($errors, "Timeslot does not exist");
     }
@@ -35,6 +36,7 @@ if (isset($_POST['reg_appointment'])) {
   if ($password_1 != $password_2) {
 	array_push($errors, "The two passwords do not match");
   }
+}
 
   // Checks if appointment time has allready been filled
   $appointment_check_query = "SELECT * FROM appointments WHERE timeslot='$time' LIMIT 1";
@@ -98,11 +100,11 @@ if (isset($_POST['cancel_appointment'])) {
   $date = date('Y/m/d H:i:s');
 
   $time = mysqli_real_escape_string($db, $_POST['time']);
-  $name = mysqli_real_escape_string($db, $_POST['name']);
+  $usname = mysqli_real_escape_string($db, $_POST['name']);
   $password = mysqli_real_escape_string($db, $_POST['password']);
   // ensures form has been correctly filled
   if (empty($time)) { array_push($errors, "Time is required"); }
-  if (empty($name)) { array_push($errors, "Name is required"); }
+  if (empty($username)) { array_push($errors, "Name is required"); }
   if (empty($password)) { array_push($errors, "Password is required"); }
   // Checks if appointment exists
   if (count($errors) == 0) {
@@ -110,33 +112,19 @@ if (isset($_POST['cancel_appointment'])) {
     $query = "SELECT * FROM appointments WHERE timeslot='$time' AND password='$password'";
     if (mysqli_num_rows($results) == 1) {
       //deletes appointment
-      $interval = $date->diff($time);
-      $interval->format(%a);
+      $diff = strtotime('2009-10-05 18:11:08') - strtotime('2009-10-05 18:07:13');
       $delete = "DELETE * FROM appointments WHERE timeslot='$time' AND password='$password'";
-      if ($interval => 1){
+      if ($diff <= 86400){
         $_SESSION['success'] = "You appointmennt is cancelled and you have been charged a small fee for late cancellation";
       }
-  	  echo "Appointment Cancelled"
+
+  	  $_SESSION['success'] = "Appointment Cancelled";
   	  header('location: index.php');
   	}else {
       // if username or password is incorrect displays error
   		array_push($errors, "Wrong time/name/password combination");
-  	}
+    }
   }
 }
-//therapist registration
-if (isset($_POST['submit'])) {
-$username =  mysqli_real_escape_string($db, $_POST['username']);
-$password =  mysqli_real_escape_string($db, $_POST['password']);
-$therapistname = mysqli_real_escape_string($db, $_POST['therapistname']);
-if (empty($username)) { array_push($errors, "Username is required"); }
-if (empty($password)) { array_push($errors, "Password is required"); }
-if (empty($therapistname)) { array_push($errors, "Therapistname is required"); }
 
-
-  if (count($errors) == 0) {
-    $epassword=md5($password);
-    $sql = "INSERT INTO `therapists` (`username`, `password`,`therapistname`) VALUES ('$username', '$epassword','$therapistname')";
-}
-}
 ?>

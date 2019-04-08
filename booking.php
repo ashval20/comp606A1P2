@@ -23,7 +23,7 @@
         better used for input line itself-->
   	<div class="input-group">
   	  <label>Name</label>
-  	  <input type="text" name="name" value="<?php echo $name; ?>">
+  	  <input type="text" name="name" value="<?php echo $username; ?>">
   	</div>
   	<div class="input-group">
   	  <label>Email</label>
@@ -31,7 +31,7 @@
   	</div>
     <div class="input-group">
   	  <label>Timeslot</label>
-      <input type="datetime-local" name="time">
+      <input type="text" name="time">
   	</div>
   	<div class="input-group">
   	  <label>Password</label>
