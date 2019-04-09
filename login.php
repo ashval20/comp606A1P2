@@ -33,8 +33,6 @@
       <!--Submits form values-->
   		<button type="submit" class="btn" name="login_user">Login</button>
   	</div>
-  	<p>
-  	</p>
   </form>
 </body>
 </html>

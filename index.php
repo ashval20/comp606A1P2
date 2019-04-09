@@ -1,6 +1,6 @@
 <?php
   session_start();
-?>
+	?>
 
 <!DOCTYPE html>
 <html>
@@ -11,24 +11,31 @@ that customers can lookat-->
 	<link rel="stylesheet" type="text/css" href="style.css"><!--we will create a seperate style for the pages than we have for the forms-->
 </head>
 <body>
-	<a href="login.php">Login</a>
-	<a href="booking.php">Make Appointment</a>
-	<a href="cancelbooking.php">Cancel Appointment</a>
-	 </script>
-<div class="header">
-	<h2>Home Page</h2>
-</div>
-<div class="content">
-	<button class="btn" id='login' type="button" onclick="login()">
-		Login
-</button>
-<button class="btn" id='makeappointment' type="button" onclick="makeappoinment()">
-	Make Appointment
-</button>
-<button class="btn" id='cancelappontment' type="button" onclick="cancelappontment()">
-	Cancel Appointment
-</button>
-</div>
+  <div class="header">
+  	<h2>Home Page</h2>
+    <a href="login.php">Login</a>
+    <a href="booking.php">Make Appointment</a>
+    <a href="cancelbooking.php">Cancel Appointment</a>
+  </div>
+  <div class="content">
+    	<!-- notification message -->
+    	<?php if (isset($_SESSION['success'])) : ?>
+        <div class="error success" >
+        	<h3>
+            <?php
+            	echo $_SESSION['success'];
+            	unset($_SESSION['success']);
+            ?>
+        	</h3>
+        </div>
+    	<?php endif ?>
+
+      <!-- logged in user information -->
+      <?php  if (isset($_SESSION['username'])) : ?>
+      	<p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
+      	<p> <a href="index.php?logout='1'" style="color: red;">logout</a> </p>
+      <?php endif ?>
+  </div>
 
 </body>
 </html>

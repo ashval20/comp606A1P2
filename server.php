@@ -6,6 +6,8 @@ $email    = "";
 $time    = "";
 $credit   = "";
 $reason   = "";
+$format   = 'Y-m-d H:i:s';
+$date     = "";
 $errors = array();
 
 // connects to the database
@@ -26,7 +28,11 @@ if (isset($_POST['reg_appointment'])) {
   if (empty($username)) { array_push($errors, "Name is required"); }
   if (empty($email)) { array_push($errors, "Email is required"); }
   if (empty($time)) { array_push($errors, "Time is required"); }
-  $timeform_check_query = "SELECT * FROM timeslots WHERE timeslot='$time' LIMIT 1";
+
+  $date = date_create_from_format($format, $time);
+  $date = $date->format('Y-m-d H:i:s');
+
+  $timeform_check_query = "SELECT * FROM timeslots WHERE timeslot='$date' LIMIT 1";
   $formresult = mysqli_query($db, $timeform_check_query);
   $timecheck = mysqli_fetch_assoc($formresult);
   if (!$timecheck) { // if timeslot does not exist
@@ -36,27 +42,26 @@ if (isset($_POST['reg_appointment'])) {
   if ($password_1 != $password_2) {
 	array_push($errors, "The two passwords do not match");
   }
-}
 
   // Checks if appointment time has allready been filled
-  $appointment_check_query = "SELECT * FROM appointments WHERE timeslot='$time' LIMIT 1";
+  $appointment_check_query = "SELECT * FROM appointments WHERE timeslot='$date' LIMIT 1";
   $result = mysqli_query($db, $appointment_check_query);
   $appoint = mysqli_fetch_assoc($result);
 
   if ($appoint) { // if appointment exists
-    if ($appoint['timeslot'] === $time) {
+    if ($appoint['timeslot'] === $date) {
       array_push($errors, "Timeslot Allready Taken");
     }
+  }
 
   // registers user if there are no errors
   if (count($errors) == 0) {
   	$password = md5($password_1);//encrypts the password
 
-    $therapistid = "SELECT therapistid FROM timeslots WHERE timeslot='$time' LIMIT 1";
-  	$query = "INSERT INTO appointments (name, email, password, credit_card_number, reason, therapistid, timeslot)
-  			  VALUES('$username', '$email', '$password', '$credit', '$reason', '$therapistid', '$time')";
+    $therapist = "SELECT therapistid FROM timeslots WHERE timeslot='$date' LIMIT 1";
+  	$query = "INSERT INTO appointments (name, email, password, credit_card_number, reason, therapistid, timeslot) VALUES('$username', '$email', '$password', '$credit', '$reason', $therapistid, '$date')";
   	mysqli_query($db, $query);
-  	$_SESSION['name'] = $name;
+  	$_SESSION['username'] = $username;
   	$_SESSION['success'] = "Your appointment has been made";
   	header('location: index.php');
   }
@@ -77,7 +82,6 @@ if (isset($_POST['login_user'])) {
   }
 // checks database for corresponding user and password
   if (count($errors) == 0) {
-  	$password = md5($password);
   	$query = "SELECT * FROM therapists WHERE username='$username' AND password='$password'";
   	$results = mysqli_query($db, $query);
   	if (mysqli_num_rows($results) == 1) {
@@ -89,18 +93,16 @@ if (isset($_POST['login_user'])) {
   		array_push($errors, "Wrong username/password combination");
   	}
   }
-}
+};
 
 
 
 // this code is for handling the cancellation form
 if (isset($_POST['cancel_appointment'])) {
   // receives all input values from the form
-  //retrieves current datetime
-  $date = date('Y/m/d H:i:s');
 
   $time = mysqli_real_escape_string($db, $_POST['time']);
-  $usname = mysqli_real_escape_string($db, $_POST['name']);
+  $username = mysqli_real_escape_string($db, $_POST['name']);
   $password = mysqli_real_escape_string($db, $_POST['password']);
   // ensures form has been correctly filled
   if (empty($time)) { array_push($errors, "Time is required"); }
@@ -109,10 +111,14 @@ if (isset($_POST['cancel_appointment'])) {
   // Checks if appointment exists
   if (count($errors) == 0) {
   	$password = md5($password);
-    $query = "SELECT * FROM appointments WHERE timeslot='$time' AND password='$password'";
+    //retrieves current datetime
+    $newdate = date('Y/m/d H:i:s');
+    $date = date_create_from_format($format, $time);
+    $date = $date->format('Y-m-d H:i:s');
+    $query = "SELECT * FROM appointments WHERE timeslot='$date' AND password='$password'";
     if (mysqli_num_rows($results) == 1) {
       //deletes appointment
-      $diff = strtotime('2009-10-05 18:11:08') - strtotime('2009-10-05 18:07:13');
+      $diff = strtotime($date) - strtotime($newdate);
       $delete = "DELETE * FROM appointments WHERE timeslot='$time' AND password='$password'";
       if ($diff <= 86400){
         $_SESSION['success'] = "You appointmennt is cancelled and you have been charged a small fee for late cancellation";
