@@ -16,6 +16,7 @@ that customers can lookat-->
     <a href="login.php">Login</a>
     <a href="booking.php">Make Appointment</a>
     <a href="cancelbooking.php">Cancel Appointment</a>
+    <a href="contactus.php">Contact Us</a>
   </div>
   <div class="content">
     	<!-- notification message -->
@@ -33,7 +34,7 @@ that customers can lookat-->
       <!-- logged in user information -->
       <?php  if (isset($_SESSION['username'])) : ?>
       	<p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
-      	<p> <a href="index.php?logout='1'" style="color: red;">logout</a> </p>
+      	<p> <a href="index.php?logout='1'" style="color: red;">Logout</a> </p>
       <?php endif ?>
   </div>
 

@@ -46,6 +46,10 @@
   	  <input type="text" name="credit">
   	</div>
     <div class="input-group">
+  	  <label>Therapist Name</label>
+  	  <input type="text" name="therapistname">
+  	</div>
+    <div class="input-group">
   	  <label>Reason for appointment</label>
   	  <input type="text" name="reason">
   	</div>
@@ -57,6 +61,10 @@
       <!--changes to Sign In page-->
   		Want to cancel an Appointment? <a href="cancelbooking.php">Cancel Here</a>
   	</p>
+    <p>
+      <!--changes to Sign In page-->
+      <a href="index.php">Home Page</a>
+    </p>
   </form>
 </body>
 </html>

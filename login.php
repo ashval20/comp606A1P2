@@ -32,6 +32,8 @@
   	<div class="input-group">
       <!--Submits form values-->
   		<button type="submit" class="btn" name="login_user">Login</button>
+
+      <button type=submit  class="btn"><a href="index.php">Back Home page</a></button>
   	</div>
   </form>
 </body>

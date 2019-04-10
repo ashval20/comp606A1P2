@@ -1,47 +1,76 @@
-<?php include('server.php') ?>
+<?php
+  session_start();
+  if (!isset($_SESSION['username'])) {
+    $_SESSION['msg'] = "You must log in first";
+    header('location: login.php');
+  }
+
+if (isset($_GET['logout'])) {
+  session_destroy();
+  unset($_SESSION['username']);
+  header("location: login.php");
+}
+?>
+
 <!DOCTYPE html>
 <html>
+<!--This is the page where we will place the timetable
+that customers can lookat-->
 <head>
-  <!--title of page-->
-  <title>Therapist info</title>
-  <!--tells page to link to style.css for formating-->
-  <link rel="stylesheet" type="text/css" href="formstyle.css">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" href="style.css"><!--we will create a seperate style for the pages than we have for the forms-->
 </head>
 <body>
   <div class="header">
-    <!--title of form-->
-  	<h2>Therapist Information</h2>
+   <h2>Home Page</h2>
+    <a href="login.php">Login</a>
+    <a href="booking.php">Make Appointment</a>
+    <a href="cancelbooking.php">Cancel Appointment</a>
   </div>
-  <!--form-->
-  <form method="post" action="therapistinfo.php">
+  <div class="content">
+     <!-- notification message -->
+     <?php if (isset($_SESSION['success'])) : ?>
+        <div class="error success" >
+         <h3>
+            <?php
+             echo $_SESSION['success'];
+             unset($_SESSION['success']);
+            ?>
+         </h3>
+        </div>
+     <?php endif ?>
 
-  	<?php include('errors.php'); ?>
+      <!-- logged in user information -->
+      <?php  if (isset($_SESSION['username'])) : ?>
+       <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
+       <p> <a href="index.php?logout='1'" style="color: red;">logout</a> </p>
+      <?php endif ?>
+  </div>
+  <div>
     <?php
-      $username=$_POST["username"];
-    $sql = "SELECT therapistid where username=$username";
-$therapistidsql = mysqli_query($conn, $sql);
+    $db = mysqli_connect('localhost', 'root', '', 'db_booking');
+    $result = mysqli_query($db,"SELECT name,email,reason,timeslot FROM appointments");
 
-    $sql = "SELECT therapistid,username,password FROM therapists where therapistid=$therapistidsql";
-$result = mysqli_query($conn, $sql);
+    echo "<table border='1'>
+    <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Reason for Appointment</th>
+    <th>Time</th>
+    </tr>";
 
-if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        echo "id: " . $row["id"]. " - User Name: " . $row["username"]. <br>";
+    while($row = mysqli_fetch_array($result))
+    {
+    echo "<tr>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['email'] . "</td>";
+    echo "<td>" . $row['reason'] . "</td>";
+    echo "<td>" . $row['timeslot'] . "</td>";
+    echo "</tr>";
     }
-    $sql = "SELECT timeslot FROM timeslots where therapistid=$therapistidsql";
-$result = mysqli_query($conn, $sql);
+    echo "</table>";
+    ?>
+  </div>
 
-if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        echo " - Time slot: " . $row["timeslot"]. <br>";
-    }
-
-
-     ?>
-
-
-  </form>
 </body>
 </html>
