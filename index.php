@@ -30,12 +30,9 @@ that customers can lookat-->
         	</h3>
         </div>
     	<?php endif ?>
-<<<<<<< HEAD
-=======
 
       <!-- logged in user information -->
 
->>>>>>> 1c56dfe1b1e1eaede099a64192c3ed74158f53f7
   </div>
   <div class="table">
     <?php

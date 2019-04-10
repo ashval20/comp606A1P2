@@ -100,6 +100,8 @@ if (isset($_POST['login_user'])) {
 if (isset($_POST['cancel_appointment'])) {
   // receives all input values from the form
 
+
+
   $time = mysqli_real_escape_string($db, $_POST['time']);
   $username = mysqli_real_escape_string($db, $_POST['name']);
   $password = mysqli_real_escape_string($db, $_POST['password']);
@@ -114,13 +116,16 @@ if (isset($_POST['cancel_appointment'])) {
     $newdate = date('Y/m/d H:i:s');
     $date = date_create_from_format($format, $time);
     $date = $date->format('Y-m-d H:i:s');
-    $query = "SELECT * FROM appointments WHERE timeslot='$date' AND password='$password'";
-    if (mysqli_num_rows($results) == 1) {
+    $query = "SELECT * FROM appointments WHERE timeslot= '$date' AND password= '$password'";
+    $result = mysqli_query($db, $query);
+    if (mysqli_num_rows($result) == 1) {
       //deletes appointment
       $diff = strtotime($date) - strtotime($newdate);
-      $delete = "DELETE * FROM appointments WHERE timeslot='$time' AND password='$password'";
+      $query = "DELETE * FROM appointments WHERE timeslot= '$date' AND password='$password'";
+      mysqli_query($db, $query);
+
       if ($diff <= 86400){
-        $_SESSION['success'] = "You appointmennt is cancelled and you have been charged a small fee for late cancellation";
+        $_SESSION['success'] = "Your appointmennt is cancelled and you have been charged a small fee for late cancellation";
       }
 
   	  $_SESSION['success'] = "Appointment Cancelled";
