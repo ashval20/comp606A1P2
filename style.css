@@ -1,0 +1,75 @@
+* {
+  margin: 0px;''
+  padding: 0px;
+}
+body {
+  font-size: 120%;
+  background-image: url("massage.img.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.header {
+  width: 80%;
+  margin: 50px auto 0px;
+  color: white;
+  background: green;
+  text-align: center;
+  word-spacing: 20px;
+  font-size: 40px;
+  border: 3px solid blue;
+  border-bottom: none;
+  border-radius: 10px 10px 0px 0px;
+  padding: 20px;
+}
+form, .content {
+  width: 80%;
+  margin: 0px auto;
+  text-align: center;
+  font-size: 40px;
+  padding: 20px;
+  border: 3px solid blue;
+  border-top: none;
+  background: white;
+  border-radius: 0px 0px 10px 10px;
+}
+
+
+.table {
+  display: inline-inline-grid;
+  width: 80%;
+  text-align: center;
+  margin: 0px auto;
+  padding: 20px;
+  border-top: none;
+  margin: 0 auto;
+  z-index: 1;
+  width: 50%;
+  height: 50px;
+  background: white;
+}
+
+.btn {
+  padding: 10px;
+  font-size: 15px;
+  color: white;
+  background: blue;
+  border: none;
+  border-radius: 5px;
+}
+.error {
+  width: 92%;
+  margin: 0px auto;
+  padding: 10px;
+  border: 1px solid red;
+  color: red;
+  background: pink;
+  border-radius: 5px;
+  text-align: left;
+}
+.success {
+  color: green;
+  background: teal;
+  border: 1px solid green;
+  margin-bottom: 20px;
+}
