@@ -58,8 +58,7 @@ if (isset($_POST['reg_appointment'])) {
   if (count($errors) == 0) {
   	$password = md5($password_1);//encrypts the password
 
-    $therapist = "SELECT therapistid FROM timeslots WHERE timeslot='$date' LIMIT 1";
-  	$query = "INSERT INTO appointments (name, email, password, credit_card_number, reason, therapistid, timeslot) VALUES('$username', '$email', '$password', '$credit', '$reason', $therapistid, '$date')";
+  	$query = "INSERT INTO appointments (name, email, password, credit_card_number, reason, therapistid, timeslot) VALUES('$username', '$email', '$password', '$credit', '$reason', therapistid, '$date')";
   	mysqli_query($db, $query);
   	$_SESSION['username'] = $username;
   	$_SESSION['success'] = "Your appointment has been made";
@@ -87,7 +86,7 @@ if (isset($_POST['login_user'])) {
   	if (mysqli_num_rows($results) == 1) {
   	  $_SESSION['username'] = $username;
   	  $_SESSION['success'] = "You are now logged in";
-  	  header('location: index.php');//we will put a link to the therapistinfo page here
+  	  header('location: therapistinfo.php');//we will put a link to the therapistinfo page here
   	}else {
       // if username or password is incorrect displays error
   		array_push($errors, "Wrong username/password combination");

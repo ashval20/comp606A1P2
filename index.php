@@ -37,6 +37,29 @@ that customers can lookat-->
       	<p> <a href="index.php?logout='1'" style="color: red;">Logout</a> </p>
       <?php endif ?>
   </div>
+  <div>
+    <?php
+    $db = mysqli_connect('localhost', 'root', '', 'db_booking');
+    $result = mysqli_query($db,"SELECT timeslot, therapistname
+      FROM timeslots, therapists
+      WHERE timeslots.therapistid = therapists.therapistid");
+
+    echo "<table border='1'>
+    <tr>
+    <th>Time</th>
+    <th>Therapist</th>
+    </tr>";
+
+    while($row = mysqli_fetch_array($result))
+    {
+    echo "<tr>";
+    echo "<td>" . $row['timeslot'] . "</td>";
+    echo "<td>" . $row['therapistname'] . "</td>";
+    echo "</tr>";
+    }
+    echo "</table>";
+    ?>
+  </div>
 
 </body>
 </html>
